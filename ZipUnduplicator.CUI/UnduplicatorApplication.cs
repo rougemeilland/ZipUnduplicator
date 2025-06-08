@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,10 +14,10 @@ using Palmtree.Linq;
 
 namespace ZipUnduplicator.CUI
 {
-    internal class UnduplicatorApplication
+    internal sealed partial class UnduplicatorApplication
         : BatchApplication
     {
-        private class ZipArchiveGroups
+        private sealed class ZipArchiveGroups
         {
             private readonly List<Dictionary<string, ZipArchiveSummary>> _groups;
             private readonly HashSet<string> _files;
@@ -74,7 +73,7 @@ namespace ZipUnduplicator.CUI
             }
         }
 
-        private class ZipArchiveInclusion
+        private sealed class ZipArchiveInclusion
         {
             private readonly List<(ZipArchiveSummary zipArchiveSummary, ZipArchiveSummary subZipArchiveSummary)> _inclusion;
 
@@ -89,10 +88,10 @@ namespace ZipUnduplicator.CUI
                 => _inclusion.Add((zipArchiveSummary, subZipArchiveSummary));
 
             public IEnumerable<(ZipArchiveSummary zipArchiveSummary, ZipArchiveSummary subZipArchiveSummary)> EnumerateInclusions()
-                => _inclusion;
+                => _inclusion.AsEnumerable();
         }
 
-        private class FilePathEqualityComparer
+        private sealed class FilePathEqualityComparer
             : IEqualityComparer<FilePath>
         {
             public bool Equals(FilePath? x, FilePath? y)
@@ -232,32 +231,33 @@ namespace ZipUnduplicator.CUI
         }
 
         private ZipArchiveSummary[] AnalyzeZipArchives(FilePath[] zipFiles, HashSet<FilePath> invalidZipArchives, Func<double, double> valueConverter)
-            => zipFiles
-                .Select((zipFile, index) =>
-                {
-                    if (IsPressedBreak)
-                        throw new OperationCanceledException();
-                    ReportProgress(valueConverter((double)index / zipFiles.Length), zipFile.FullName, (progressRate, content) => $"{progressRate} analyzing \"{content}\".");
-                    try
+            => [..
+                    zipFiles
+                    .Select((zipFile, index) =>
                     {
+                        if (IsPressedBreak)
+                            throw new OperationCanceledException();
+                        ReportProgress(valueConverter((double)index / zipFiles.Length), zipFile.FullName, (progressRate, content) => $"{progressRate} analyzing \"{content}\".");
                         try
                         {
-                            return ZipArchiveSummary.CreateInstance(zipFile);
+                            try
+                            {
+                                return ZipArchiveSummary.CreateInstance(zipFile);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception($"Failed to read zip archive.: \"{zipFile.FullName}\"", ex);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            throw new Exception($"Failed to read zip archive.: \"{zipFile.FullName}\"", ex);
+                            ReportException(ex);
+                            _ = invalidZipArchives.Add(zipFile);
+                            return null;
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        ReportException(ex);
-                        _ = invalidZipArchives.Add(zipFile);
-                        return null;
-                    }
-                })
-                .WhereNotNull()
-                .ToArray();
+                    })
+                    .WhereNotNull()
+                ];
 
         private (ZipArchiveGroups groups, ZipArchiveInclusion inclusions) CompareZipArchives(DirectoryPath baseDirectory, ZipArchiveSummary[] zipArchiveSummaries, HashSet<FilePath> invalidZipArchives, bool strict, Func<double, double> progressValueConverter)
         {
@@ -368,7 +368,7 @@ namespace ZipUnduplicator.CUI
                 {
                     if (disposedFile.Exists)
                     {
-                        _=trashBox.DisposeFile(disposedFile);
+                        _ = trashBox.DisposeFile(disposedFile);
                         ReportInformationMessage($"Duplicate ZIP archives has been disposed.: \"{disposedFile.FullName}\"");
                     }
                 }
@@ -382,8 +382,7 @@ namespace ZipUnduplicator.CUI
                 if (uselessFile.Exists)
                 {
                     var destinationDirectory = uselessFile.Directory.GetSubDirectory(".disposed").Create();
-                    var pattern = new Regex(@"^(?<body>.*?)( +\(\d+\))?$", RegexOptions.Compiled);
-                    var match = pattern.Match(uselessFile.NameWithoutExtension);
+                    var match = GetDuplicatedFileNamePattern().Match(uselessFile.NameWithoutExtension);
                     var body = match.Groups["body"].Value;
                     for (var count = 1; ; ++count)
                     {
@@ -398,5 +397,8 @@ namespace ZipUnduplicator.CUI
                 }
             }
         }
+
+        [GeneratedRegex(@"^(?<body>.*?)( +\(\d+\))?$", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture)]
+        private static partial Regex GetDuplicatedFileNamePattern();
     }
 }

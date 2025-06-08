@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Palmtree;
@@ -11,16 +11,16 @@ using Palmtree.Linq;
 
 namespace ZipUnduplicator.CUI
 {
-    internal partial class ZipArchiveSummary
+    internal sealed partial class ZipArchiveSummary
     {
-        private class ReadOnlyCollection<ELEMENT_T>
+        private sealed class ReadOnlyCollection<ELEMENT_T>
             : IReadOnlyCollection<ELEMENT_T>
         {
             private readonly List<ELEMENT_T> _elements;
 
             public ReadOnlyCollection(IEnumerable<ELEMENT_T> elements)
             {
-                _elements = elements.ToList();
+                _elements = [.. elements];
             }
 
             public int Count => _elements.Count;
@@ -29,7 +29,7 @@ namespace ZipUnduplicator.CUI
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
 
-        private partial class ZipArchiveSummaryComparerByUsefullness
+        private sealed partial class ZipArchiveSummaryComparerByUsefullness
             : IComparer<ZipArchiveSummary>
         {
             public int Compare(ZipArchiveSummary? x, ZipArchiveSummary? y)
@@ -73,7 +73,7 @@ namespace ZipUnduplicator.CUI
                     Validation.Assert(match.Success == true, "match1.Success == true");
                     var body = match.Groups["body"].Value;
                     var numberMatchGroup = match.Groups["number"];
-                    var number = numberMatchGroup.Success ? int.Parse(numberMatchGroup.Value) : -1;
+                    var number = numberMatchGroup.Success ? int.Parse(numberMatchGroup.Value, CultureInfo.InvariantCulture.NumberFormat) : -1;
                     return (body, number);
                 }
             }
@@ -235,12 +235,7 @@ namespace ZipUnduplicator.CUI
             }
 
             static List<ZipSourceEntry> GetEntries(ZipArchiveFileReader zipReader)
-            {
-                return
-                    zipReader.EnumerateEntries()
-                    .Where(entry => entry.IsFile)
-                    .ToList();
-            }
+                => [.. zipReader.EnumerateEntries().Where(entry => entry.IsFile)];
         }
     }
 }

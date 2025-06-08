@@ -6,9 +6,9 @@ using Palmtree.IO.Compression.Archive.Zip;
 
 namespace ZipUnduplicator.CUI
 {
-    internal class ZipEntrySummary
+    internal sealed class ZipEntrySummary
     {
-        private class EntriesComparerById
+        private sealed class EntriesComparerById
             : IComparer<ZipEntrySummary>
         {
             public int Compare(ZipEntrySummary? x, ZipEntrySummary? y)
@@ -21,7 +21,7 @@ namespace ZipUnduplicator.CUI
             }
         }
 
-        private class EntriesComparerByFullName
+        private sealed class EntriesComparerByFullName
             : IComparer<ZipEntrySummary>
         {
             public int Compare(ZipEntrySummary? x, ZipEntrySummary? y)
@@ -37,7 +37,7 @@ namespace ZipUnduplicator.CUI
             }
         }
 
-        private class EntriesComparerBySizeAndCrc
+        private sealed class EntriesComparerBySizeAndCrc
             : IComparer<ZipEntrySummary>
         {
             public int Compare(ZipEntrySummary? x, ZipEntrySummary? y)

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net8.0-windows;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net9.0-windows;net8.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,8 +31,16 @@
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Palmtree.Application" Version="1.4.1-alpha" />
+    <PackageReference Include="Palmtree.Application" Version="1.6.10-alpha" />
   </ItemGroup>
 
 

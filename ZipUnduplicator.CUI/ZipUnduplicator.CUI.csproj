@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>zipundup</AssemblyName>
@@ -32,15 +32,25 @@
     <NoWarn>1701;1702;IDE0290;CA1512;IDE0028</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0|AnyCPU'">
+    <NoWarn>1701;1702;IDE0290;CA1512;IDE0028</NoWarn>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
+    <NoWarn>1701;1702;IDE0290;CA1512;IDE0028</NoWarn>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Palmtree.Application" Version="1.4.1-alpha" />
-    <PackageReference Include="Palmtree.Core" Version="1.14.0-alpha" />
-    <PackageReference Include="Palmtree.IO" Version="1.11.2-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Archive.Zip" Version="1.8.6-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.0.19-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.0.19-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.0.19-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.0.19-alpha" />
+    <PackageReference Include="Palmtree.Application" Version="1.6.10-alpha" />
+    <PackageReference Include="Palmtree.Core" Version="1.17.1-alpha" />
+    <PackageReference Include="Palmtree.IO" Version="1.18.1-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Archive.Zip" Version="1.9.16-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.1.0-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.1.0-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.1.0-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.1.0-alpha" />
   </ItemGroup>
 
 </Project>
