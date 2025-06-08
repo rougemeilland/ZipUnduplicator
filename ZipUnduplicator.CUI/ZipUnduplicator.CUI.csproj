@@ -47,10 +47,10 @@
     <PackageReference Include="Palmtree.Core" Version="1.17.1-alpha" />
     <PackageReference Include="Palmtree.IO" Version="1.18.1-alpha" />
     <PackageReference Include="Palmtree.IO.Compression.Archive.Zip" Version="1.9.16-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.1.0-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.1.0-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.1.0-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.1.0-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.1.1-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.1.1-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.1.1-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.1.1-alpha" />
   </ItemGroup>
 
 </Project>
