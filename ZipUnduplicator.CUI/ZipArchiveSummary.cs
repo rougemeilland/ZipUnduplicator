@@ -70,7 +70,7 @@ namespace ZipUnduplicator.CUI
                 static (string body, int number) ParseArchiveFileName(ZipArchiveSummary zipArchiveSummary)
                 {
                     var match = GetZipArchiveFileNamePattern().Match(zipArchiveSummary.ZipArchive.NameWithoutExtension);
-                    Validation.Assert(match.Success == true, "match1.Success == true");
+                    Validation.Assert(match.Success == true);
                     var body = match.Groups["body"].Value;
                     var numberMatchGroup = match.Groups["number"];
                     var number = numberMatchGroup.Success ? int.Parse(numberMatchGroup.Value, CultureInfo.InvariantCulture.NumberFormat) : -1;
@@ -150,7 +150,7 @@ namespace ZipUnduplicator.CUI
             using var zipReader2 = other.ZipArchive.OpenAsZipFile();
             var entries1 = GetEntries(zipReader1, strict);
             var entries2 = GetEntries(zipReader2, strict);
-            Validation.Assert(entries1.Count() == entries2.Count(), "entries1.Count() == entries2.Count()");
+            Validation.Assert(entries1.Count() == entries2.Count());
             var entryPairs =
                 entries1.Zip(entries2, (x, y) => (x, y))
                 .ToList();
@@ -195,7 +195,7 @@ namespace ZipUnduplicator.CUI
             {
                 if (entries1.Count <= entries2.Count)
                     break;
-                Validation.Assert(entries1.Count > 0, "entries1.Count > 0");
+                Validation.Assert(entries1.Count > 0);
                 if (ZipEntrySummary.EqualsBySizeAndCrc(entries1[0], entries2[0]))
                     entries2.RemoveAt(0);
                 entries1.RemoveAt(0);
@@ -210,7 +210,7 @@ namespace ZipUnduplicator.CUI
             using var zipReader2 = other.ZipArchive.OpenAsZipFile();
             var entries1 = GetEntries(zipReader1);
             var entries2 = GetEntries(zipReader2);
-            Validation.Assert(entries1.Count > entries2.Count, "entries1.Count > entries2.Count");
+            Validation.Assert(entries1.Count > entries2.Count);
 
             var progressCounter = new ProgressCounter<double>(progress.Report, 0);
             var totalCount = entries1.Count;
@@ -221,7 +221,7 @@ namespace ZipUnduplicator.CUI
                 {
                     if (entries1.Count <= entries2.Count)
                         break;
-                    Validation.Assert(entries1.Count > 0, "entries1.Count > 0");
+                    Validation.Assert(entries1.Count > 0);
                     if (ZipEntrySummary.EqualsBySizeAndCrc(entries1[0], entries2[0], new SimpleProgress<double>(value => progressCounter.AddValue(value / totalCount))))
                         entries2.RemoveAt(0);
                     entries1.RemoveAt(0);
@@ -235,7 +235,9 @@ namespace ZipUnduplicator.CUI
             }
 
             static List<ZipSourceEntry> GetEntries(ZipArchiveFileReader zipReader)
-                => [.. zipReader.EnumerateEntries().Where(entry => entry.IsFile)];
+            {
+                return [.. zipReader.EnumerateEntries().Where(entry => entry.IsFile)];
+            }
         }
     }
 }

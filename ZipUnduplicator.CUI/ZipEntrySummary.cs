@@ -66,8 +66,7 @@ namespace ZipUnduplicator.CUI
 
         private ZipEntrySummary(ZipEntryId id, string fullName, ulong size, uint crc, DateTimeOffset? lastWriteTimeUtc)
         {
-            if (size <= 0)
-                throw new ArgumentOutOfRangeException(nameof(size));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(size);
 
             Id = id;
             FullName = fullName;

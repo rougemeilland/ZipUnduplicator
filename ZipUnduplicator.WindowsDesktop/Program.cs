@@ -10,7 +10,6 @@ namespace ZipUnduplicator.WindowsDesktop
         [STAThread]
         private static void Main(string[] args)
         {
-            TinyConsole.DefaultTextWriter = ConsoleTextWriterType.StandardError;
             var launcher = new ConsoleApplicationLauncher("zipundup", Encoding.UTF8);
             launcher.Launch(args);
         }

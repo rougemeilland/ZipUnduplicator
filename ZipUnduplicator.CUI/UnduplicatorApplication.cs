@@ -24,7 +24,7 @@ namespace ZipUnduplicator.CUI
 
             public ZipArchiveGroups()
             {
-                _groups = new List<Dictionary<string, ZipArchiveSummary>>();
+                _groups = [];
                 _files = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
 
@@ -79,7 +79,7 @@ namespace ZipUnduplicator.CUI
 
             public ZipArchiveInclusion()
             {
-                _inclusion = new List<(ZipArchiveSummary zipArchiveSummary, ZipArchiveSummary subZipArchiveSummary)>();
+                _inclusion = [];
             }
 
             public ulong Count => checked((ulong)_inclusion.Count);
@@ -138,7 +138,7 @@ namespace ZipUnduplicator.CUI
                     if (arg == "--strict")
                         strict = true;
                     else if (arg.StartsWith('-'))
-                        throw new Exception($"An unsupported option is specified on the command line.: \"{arg}\"");
+                        throw new ApplicationException($"An unsupported option is specified on the command line.: \"{arg}\"");
                     else
                         newArgs.Add(arg);
                 }
@@ -246,7 +246,7 @@ namespace ZipUnduplicator.CUI
                             }
                             catch (Exception ex)
                             {
-                                throw new Exception($"Failed to read zip archive.: \"{zipFile.FullName}\"", ex);
+                                throw new ApplicationException($"Failed to read zip archive.: \"{zipFile.FullName}\"", ex);
                             }
                         }
                         catch (Exception ex)
@@ -304,7 +304,7 @@ namespace ZipUnduplicator.CUI
                                 {
                                     ValidateZipArchive(invalidZipArchives, zipArchiveSummary1.ZipArchive);
                                     ValidateZipArchive(invalidZipArchives, zipArchiveSummary2.ZipArchive);
-                                    throw new Exception($"Failed to compare ZIP archives.: archive1=\"{zipArchiveSummary1.ZipArchive}\", archive2=\"{zipArchiveSummary2.ZipArchive}\"", ex);
+                                    throw new ApplicationException($"Failed to compare ZIP archives.: archive1=\"{zipArchiveSummary1.ZipArchive}\", archive2=\"{zipArchiveSummary2.ZipArchive}\"", ex);
                                 }
                             }
                             catch (Exception ex)
@@ -327,7 +327,9 @@ namespace ZipUnduplicator.CUI
             return (groups, inclusions);
 
             void Report(double value)
-                => ReportProgress(progressValueConverter(value), baseDirectory.FullName, (progressRate, content) => $"{progressRate} comparing files on directory \"{content}\".");
+            {
+                ReportProgress(progressValueConverter(value), baseDirectory.FullName, (progressRate, content) => $"{progressRate} comparing files on directory \"{content}\".");
+            }
 
             static void ValidateZipArchive(HashSet<FilePath> invalidZipArchives, FilePath zipArchive)
             {
@@ -349,7 +351,7 @@ namespace ZipUnduplicator.CUI
                 catch (Exception ex)
                 {
                     _ = invalidZipArchives.Add(zipArchive);
-                    throw new Exception($"ZIP archive is corrupted.: \"{zipArchive.FullName}\"", ex);
+                    throw new ApplicationException($"ZIP archive is corrupted.: \"{zipArchive.FullName}\"", ex);
                 }
             }
         }
