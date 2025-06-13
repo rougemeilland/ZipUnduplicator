@@ -30,14 +30,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Palmtree.Application" Version="1.6.13-alpha" />
-    <PackageReference Include="Palmtree.Core" Version="1.19.0-alpha" />
-    <PackageReference Include="Palmtree.IO" Version="1.19.1-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Archive.Zip" Version="1.9.18-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.1.3-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.1.3-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.1.3-alpha" />
-    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.1.3-alpha" />
+    <PackageReference Include="Palmtree.Application" Version="1.6.14-alpha" />
+    <PackageReference Include="Palmtree.Core" Version="1.19.1-alpha" />
+    <PackageReference Include="Palmtree.IO" Version="1.19.2-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Archive.Zip" Version="1.9.19-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Bzip2" Version="1.1.4-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate" Version="1.1.4-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Deflate64" Version="1.1.4-alpha" />
+    <PackageReference Include="Palmtree.IO.Compression.Stream.Plugin.SevenZip.Lzma" Version="1.1.4-alpha" />
   </ItemGroup>
 
 </Project>
